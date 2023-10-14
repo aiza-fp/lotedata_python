@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# docker build -f examples/lotedata_python/Dockerfile-installed -t sawtooth-lotedata-tp-python .
+# docker build -f Dockerfile-tests-installed -t sawtooth-lotedata-tp-python .
 
 # -------------=== python sdk build ===-------------
 
@@ -79,7 +79,7 @@ COPY . /project
 RUN dpkg -i /tmp/python3-sawtooth-*.deb || true \
  && apt-get -f -y install \
  && /project/bin/protogen \
- && cd /project/examples/lotedata_python/ \
+ && cd /project/ \
  && export ST_VERSION=$(../../bin/get_version) \
  && rm setup.py \
  && mv setup_tests.py setup.py \
@@ -97,7 +97,7 @@ RUN apt-get update \
 
 COPY --from=sawtooth-sdk-python-builder /python3-sawtooth-sdk*.deb /tmp
 
-COPY --from=python-lotedata-tests-builder /project/examples/python3-sawtooth-lotedata*.deb /tmp
+COPY --from=python-lotedata-tests-builder /project/python3-sawtooth-lotedata*.deb /tmp
 
 RUN echo "deb http://repo.sawtooth.me/ubuntu/ci bionic universe" >> /etc/apt/sources.list \
  && (apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8AA7AF1F1091A5FD \
